@@ -33,8 +33,4 @@ data class RainbowInfo(var level: Int, var color: Color) {
 
         return offset in startOffset..endOffset
     }
-
-    companion object {
-        val RAINBOW_INFO_KEY: Key<RainbowInfo> = Key.create("RAINBOW_INFO")
-    }
 }

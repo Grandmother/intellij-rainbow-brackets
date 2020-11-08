@@ -1,7 +1,7 @@
 package com.github.izhangzhihao.rainbow.brackets.annotator
 
 import com.github.izhangzhihao.rainbow.brackets.RainbowHighlighter
-import com.github.izhangzhihao.rainbow.brackets.RainbowInfo
+import com.github.izhangzhihao.rainbow.brackets.RainbowInfoStore.RAINBOW_INFO_KEY
 import com.github.izhangzhihao.rainbow.brackets.settings.RainbowSettings
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
@@ -63,7 +63,7 @@ class KotlinLabelAnnotator : Annotator {
         }
 
         refElement
-                .let { RainbowInfo.RAINBOW_INFO_KEY[it]?.color ?: RainbowHighlighter.DEFAULT_KOTLIN_LABEL_COLOR }
+                .let { RAINBOW_INFO_KEY[it]?.color ?: RainbowHighlighter.DEFAULT_KOTLIN_LABEL_COLOR }
                 .let {
                     holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
                             .range(target)

@@ -1,6 +1,7 @@
 package com.github.izhangzhihao.rainbow.brackets.indents
 
 import com.github.izhangzhihao.rainbow.brackets.RainbowInfo
+import com.github.izhangzhihao.rainbow.brackets.RainbowInfoStore.RAINBOW_INFO_KEY
 import com.github.izhangzhihao.rainbow.brackets.settings.RainbowSettings
 import com.github.izhangzhihao.rainbow.brackets.util.*
 import com.intellij.codeHighlighting.TextEditorHighlightingPass
@@ -47,7 +48,9 @@ import java.lang.StrictMath.abs
 import java.lang.StrictMath.min
 import java.util.*
 
-/** From [com.intellij.codeInsight.daemon.impl.IndentsPass] */
+/** From [com.intellij.codeInsight.daemon.impl.IndentsPass]
+ *  https://github.com/JetBrains/intellij-community/blob/master/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/IndentsPass.java
+ * */
 class RainbowIndentsPass internal constructor(
         project: Project,
         editor: Editor,
@@ -481,10 +484,10 @@ class RainbowIndentsPass internal constructor(
             val psiFile = PsiManager.getInstance(project).findFile(virtualFile) ?: return null
             var element = psiFile.findElementAt(highlighter.endOffset)?.parent ?: return null
 
-            var rainbowInfo = RainbowInfo.RAINBOW_INFO_KEY[element]
+            var rainbowInfo = RAINBOW_INFO_KEY[element]
             if (rainbowInfo == null && psiFile is XmlFile && element !is XmlTag) {
                 element = PsiTreeUtil.findFirstParent(element, true, XML_TAG_PARENT_CONDITION) ?: return null
-                rainbowInfo = RainbowInfo.RAINBOW_INFO_KEY[element] ?: return null
+                rainbowInfo = RAINBOW_INFO_KEY[element] ?: return null
             }
 
             if (!element.isValid || !checkBoundary(document, element, highlighter)) {

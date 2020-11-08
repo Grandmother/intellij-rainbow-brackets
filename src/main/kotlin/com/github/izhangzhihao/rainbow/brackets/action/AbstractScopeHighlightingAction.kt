@@ -1,6 +1,8 @@
 package com.github.izhangzhihao.rainbow.brackets.action
 
 import com.github.izhangzhihao.rainbow.brackets.RainbowInfo
+import com.github.izhangzhihao.rainbow.brackets.RainbowInfoStore.HIGHLIGHTING_DISPOSER_KEY
+import com.github.izhangzhihao.rainbow.brackets.RainbowInfoStore.RAINBOW_INFO_KEY
 import com.intellij.codeInsight.highlighting.HighlightManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -45,8 +47,8 @@ abstract class AbstractScopeHighlightingAction : AnAction() {
     protected abstract fun Editor.addHighlighter(highlightManager: HighlightManager,
                                                  rainbowInfo: RainbowInfo): Collection<RangeHighlighter>
 
-    private class HighlightingDisposer(private val editor: Editor,
-                                       private val disposeAction: () -> Unit) : KeyAdapter(), FocusListener {
+    class HighlightingDisposer(private val editor: Editor,
+                                        private val disposeAction: () -> Unit) : KeyAdapter(), FocusListener {
 
         init {
             editor.contentComponent.let {
@@ -69,8 +71,6 @@ abstract class AbstractScopeHighlightingAction : AnAction() {
     }
 
     companion object {
-        private val HIGHLIGHTING_DISPOSER_KEY: Key<HighlightingDisposer> = Key.create("HIGHLIGHTING_DISPOSER_KEY")
-
         private var Editor.highlightingDisposer: HighlightingDisposer?
             get() = HIGHLIGHTING_DISPOSER_KEY[this]
             set(value) {
@@ -80,7 +80,7 @@ abstract class AbstractScopeHighlightingAction : AnAction() {
         private val AnActionEvent.editor: Editor? get() = CommonDataKeys.EDITOR.getData(dataContext)
 
         private fun PsiElement.getRainbowInfo(offset: Int): RainbowInfo? {
-            return RainbowInfo.RAINBOW_INFO_KEY[this]?.takeIf { it.containsOffset(offset) }
+            return RAINBOW_INFO_KEY[this]?.takeIf { it.containsOffset(offset) }
         }
 
         private fun PsiFile.findRainbowInfoAt(offset: Int): RainbowInfo? {

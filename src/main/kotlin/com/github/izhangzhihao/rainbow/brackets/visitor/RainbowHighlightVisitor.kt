@@ -2,6 +2,7 @@ package com.github.izhangzhihao.rainbow.brackets.visitor
 
 import com.github.izhangzhihao.rainbow.brackets.RainbowHighlighter.getHighlightInfo
 import com.github.izhangzhihao.rainbow.brackets.RainbowInfo
+import com.github.izhangzhihao.rainbow.brackets.RainbowInfoStore.RAINBOW_INFO_KEY
 import com.github.izhangzhihao.rainbow.brackets.settings.RainbowSettings
 import com.github.izhangzhihao.rainbow.brackets.util.memoizedFileExtension
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
@@ -66,10 +67,10 @@ abstract class RainbowHighlightVisitor : HighlightVisitor {
                                            color: Color,
                                            startElement: PsiElement?,
                                            endElement: PsiElement?) {
-        val rainbowInfo = RainbowInfo.RAINBOW_INFO_KEY[this]?.also {
+        val rainbowInfo = RAINBOW_INFO_KEY[this]?.also {
             it.level = level
             it.color = color
-        } ?: RainbowInfo(level, color).also { RainbowInfo.RAINBOW_INFO_KEY[this] = it }
+        } ?: RainbowInfo(level, color).also { RAINBOW_INFO_KEY[this] = it }
 
         startElement?.let { rainbowInfo.startElement = it }
         endElement?.let { rainbowInfo.endElement = it }
