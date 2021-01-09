@@ -12,6 +12,8 @@ import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import org.jetbrains.kotlin.idea.j2k.IdeaJavaToKotlinServices
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.j2k.ConverterSettings
+import org.jetbrains.kotlin.j2k.JavaToKotlinConverter
+import org.jetbrains.kotlin.j2k.OldJavaToKotlinConverter
 import org.jetbrains.kotlin.nj2k.NewJavaToKotlinConverter
 import org.jetbrains.kotlin.nj2k.postProcessing.NewJ2kPostProcessor
 import org.jetbrains.kotlin.psi.KtFile
@@ -67,8 +69,10 @@ class JTS2KTCodeGen : LightJavaCodeInsightFixtureTestCase() {
             psiManager.findFile(virtualFile) as PsiJavaFile
         }
 
-        val converter =
-            NewJavaToKotlinConverter(project, module, ConverterSettings.defaultSettings, IdeaJavaToKotlinServices)
+        //val converter =
+        //    NewJavaToKotlinConverter(project, module, ConverterSettings.defaultSettings, IdeaJavaToKotlinServices)
+
+        val converter = OldJavaToKotlinConverter(project, ConverterSettings.defaultSettings, IdeaJavaToKotlinServices)
 
         val (results, _) =
             WriteCommandAction.runWriteCommandAction(project, Computable {
