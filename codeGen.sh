@@ -4,7 +4,9 @@ mkdir -p tmp && cd tmp && git clone https://github.com/locationtech/jts.git && c
 
 cp -r tmp/jts/modules/core j2k/input/
 
-ls -al ~/intellij-rainbow-brackets/j2k/input
+rm -rf tmp/jts/modules/core/src/test
+
+ls -al ~/intellij-rainbow-brackets/j2k/input/core
 
 ./gradlew test
 
