@@ -63,7 +63,7 @@ class JTS2KTCodeGen : LightJavaCodeInsightFixtureTestCase() {
         assert(filesToConvert.isNotEmpty())
 
         val psiFilesToConvert = filesToConvert.map { javaFile ->
-            val virtualFile = addFile(javaFile, "test")
+            val virtualFile = addFile(javaFile, "${UUID.randomUUID()}")
             psiManager.findFile(virtualFile) as PsiJavaFile
         }
 
