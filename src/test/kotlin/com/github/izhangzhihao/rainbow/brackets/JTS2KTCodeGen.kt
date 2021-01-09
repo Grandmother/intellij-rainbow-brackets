@@ -10,6 +10,7 @@ import com.intellij.testFramework.LightPlatformTestCase
 import com.intellij.testFramework.VfsTestUtil.deleteFile
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import org.jetbrains.kotlin.idea.j2k.IdeaJavaToKotlinServices
+import org.jetbrains.kotlin.idea.j2k.J2kPostProcessor
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.j2k.ConverterSettings
 import org.jetbrains.kotlin.j2k.JavaToKotlinConverter
@@ -72,13 +73,14 @@ class JTS2KTCodeGen : LightJavaCodeInsightFixtureTestCase() {
         //val converter =
         //    NewJavaToKotlinConverter(project, module, ConverterSettings.defaultSettings, IdeaJavaToKotlinServices)
 
-        val converter = OldJavaToKotlinConverter(project, ConverterSettings.defaultSettings, IdeaJavaToKotlinServices)
+//        val (results, _) =
+//            WriteCommandAction.runWriteCommandAction(project, Computable {
+//                PostprocessReformattingAspect.getInstance(project).doPostponedFormatting()
+//                return@Computable converter.filesToKotlin(psiFilesToConvert, NewJ2kPostProcessor())
+//            })
 
-        val (results, _) =
-            WriteCommandAction.runWriteCommandAction(project, Computable {
-                PostprocessReformattingAspect.getInstance(project).doPostponedFormatting()
-                return@Computable converter.filesToKotlin(psiFilesToConvert, NewJ2kPostProcessor())
-            })
+        val converter = OldJavaToKotlinConverter(project, ConverterSettings.defaultSettings, IdeaJavaToKotlinServices)
+        val (results, _) = converter.filesToKotlin(psiFilesToConvert, J2kPostProcessor(formatCode = true))
 
         fun expectedResultFile(i: Int) = File(filesToConvert[i].path.replace(".java", ".kt").replace(inputDir, outputDir))
 
